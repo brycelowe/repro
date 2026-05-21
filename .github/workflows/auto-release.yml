@@ -1,0 +1,12 @@
+name: Auto Release
+on: { push: { branches: [main], paths: ['pyproject.toml'] } }
+permissions: { contents: write, actions: write }
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          COMMIT_MSG="$ github.event.head_commit.message "
+          if [[ "$COMMIT_MSG" =~ ^chore:\ bump\ version\ to\ ([0-9]+\.[0-9]+\.[0-9]+) ]]; then
+            echo "Detected release: ${BASH_REMATCH[1]}"
+          fi
